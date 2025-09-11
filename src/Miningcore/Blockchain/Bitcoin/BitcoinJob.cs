@@ -356,6 +356,9 @@ public class BitcoinJob
         if(coin.HasDeveloper)
             rewardToPool = CreateDeveloperOutputs(tx, rewardToPool);
 
+        if(coin.HasGovernanceAddress)
+            rewardToPool = CreateGovernanceAddressOutputs(tx, rewardToPool);
+
         // Remaining amount goes to pool
         tx.Outputs.Add(rewardToPool, poolAddressDestination);
 
@@ -784,7 +787,6 @@ public class BitcoinJob
 
     #endregion // MinerDevfund
 
-
     #region CommunityAddress
 
     protected virtual Money CreateCommunityAddressOutputs(Transaction tx, Money reward)
@@ -824,6 +826,21 @@ public class BitcoinJob
     }
 
     #endregion // CoinbaseDevReward
+
+    #region GovernanceAddress
+
+    protected virtual Money CreateGovernanceAddressOutputs(Transaction tx, Money reward)
+    {
+        if(BlockTemplate.GovernanceReward > 0)
+        {
+            var payeeReward = BlockTemplate.GovernanceReward;
+            var payeeAddress = BitcoinUtils.BechSegwitAddressToDestination(BlockTemplate.GovernanceAddress, network, coin?.BechPrefix);
+            tx.Outputs.Add(payeeReward, payeeAddress);
+            reward -= payeeReward;
+        }
+        return reward;
+    }
+    #endregion // GovernanceAddress
 
     #region Foundation
 
@@ -947,6 +964,14 @@ public class BitcoinJob
                 if(founderParameters.Extra?.ContainsKey("fortune") == true)
                 {
                     founderParameters.Founder = JToken.FromObject(founderParameters.Extra["fortune"]);
+                }
+            }
+
+            if(coin.Symbol == "ADOT")
+            {
+                if(founderParameters.Extra?.ContainsKey("fundreward") == true)
+                {
+                    founderParameters.Founder = JToken.FromObject(founderParameters.Extra["fundreward"]);
                 }
             }
 
