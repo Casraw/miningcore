@@ -4843,7 +4843,7 @@
         "website": "http://zero-dynamics.org",
         "market": "https://app.exbitron.com/exchange/?market=0DYNC-USDT",
         "github": "https://github.com/Zero-Dynamics/cash-core",
-        "explorer": "http://154.92.17.70:3008/",
+        "explorer": "http://43.156.28.109:3008/",
         "twitter": "https://x.com/Zero_Dyn_",
         "telegram": "https://t.me/Zero_Dynamics",
         "discord": "https://discord.gg/4W8WfW9qje",
@@ -4863,10 +4863,42 @@
         },
         "hasMasterNodes": true,
         "shareMultiplier": 65536,
-        "coinbaseMinConfimations": 40,
-        "explorerBlockLink": "http://154.92.17.70:3008/block/$hash$",
-        "explorerTxLink": "http://154.92.17.70:3008/tx/{0}",
-        "explorerAccountLink": "http://154.92.17.70:3008/address/{0}"
+        "coinbaseMinConfimations": 41,
+        "explorerBlockLink": "http://43.156.28.109:3008/block/$hash$",
+        "explorerTxLink": "http://43.156.28.109:3008/tx/{0}",
+        "explorerAccountLink": "http://43.156.28.109:3008/address/{0}"
+    },
+    "alterdot": {
+        "name": "Alterdot",
+        "symbol": "ADOT",
+        "family": "bitcoin",
+        "website": "https://alterdot.network/",
+        "market": "https://app.exbitron.com/exchange/?market=ADOT-USDT",
+        "github": "https://github.com/Alterdot/Alterdot",
+        "explorer": "https://insight.alterdot.network/",
+        "twitter": "https://twitter.com/alter_dot",
+        "telegram": "",
+        "discord": "https://discord.com/invite/Kd3Cr8s7sC",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "argon2d16000"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "argon2d16000"
+                }
+            ]
+        },
+        "hasFounderFee": true,
+        "hasMasterNodes": true,
+        "shareMultiplier": 65536,
+        "explorerBlockLink": "https://insight.alterdot.network/block/$hash$",
+        "explorerTxLink": "https://insight.alterdot.network/tx/{0}",
+        "explorerAccountLink": "https://insight.alterdot.network/address/{0}"
     },
     "zetacoin": {
         "name": "Zetacoin",
@@ -6711,6 +6743,38 @@
         "explorerBlockLink": "https://explorer.adventurecoin.quest/#/block/$hash$",
         "explorerTxLink": "https://explorer.adventurecoin.quest/#/transaction/{0}",
         "explorerAccountLink": "https://explorer.adventurecoin.quest/#/address/{0}"
+    },
+    "interchained": {
+        "name": "Interchained",
+        "canonicalName": "Interchained",
+        "bechPrefix": "itc",
+        "symbol": "ITC",
+        "family": "bitcoin",
+        "website": "https://interchained.org/",
+        "github": "https://github.com/interchained/interchained",
+        "explorer": "https://explorer.interchained.org/",
+        "twitter": "https://twitter.com/Interchained",
+        "telegram": "https://t.me/Interchained_ITC",
+        "discord": "https://discord.gg/vvVcN3F8M7",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "interchained"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "hasGovernanceAddress": true,
+        "shareMultiplier": 65536,
+        "explorerBlockLink": "https://explorer.interchained.org/block/$hash$",
+        "explorerTxLink": "https://explorer.interchained.org/tx/{0}",
+        "explorerAccountLink": "https://explorer.interchained.org/address/{0}"
     },
     "evoai": {
         "name": "EvoAI",
