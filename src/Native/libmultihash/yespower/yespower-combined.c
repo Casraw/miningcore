@@ -1337,3 +1337,15 @@ void yespowerEQPAY_hash(const char* input, char* output, uint32_t len)
     yespower_tls(input, len, &yespower_1_0_EQPAY, (yespower_binary_t *)output);
 }
 
+void interchained_hash(const char* input, char* output, uint32_t len)
+{
+    yespower_params_t yespower_1_0_interchained = {
+        .version = YESPOWER_1_0,
+        .N = 1024,
+        .r = 8,
+        .pers = NULL,
+        .perslen = 0
+    };
+    yespower_tls( input, len, &yespower_1_0_interchained, (yespower_binary_t *)output);
+}
+
