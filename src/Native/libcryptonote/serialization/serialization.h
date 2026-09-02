@@ -11,6 +11,10 @@
 #include <string>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/integral_constant.hpp>
+// boost/type_traits/integral_constant.hpp only forward-declares mpl_::bool_ as
+// of Boost 1.8x, so the definition has to be pulled in explicitly for the
+// boost::mpl::bool_ parameters used by do_check_stream_state() below.
+#include <boost/mpl/bool.hpp>
 
 template <class T>
 struct is_blob_type { typedef boost::false_type type; };

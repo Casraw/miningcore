@@ -1,0 +1,82 @@
+# Miningcore build image for Ubuntu 26.04 LTS
+#
+# Ubuntu 26.04 ships .NET 10 (dotnet-sdk-10.0), GCC 15, CMake 4 and Boost 1.90
+# in its own archive, so no external package feed is required.
+#
+# Driven by build-ubuntu-26.04.sh, which exports the "artifacts" stage to the
+# host. Building it directly also works:
+#
+#   docker build -f Dockerfile.ubuntu-26.04 --target runtime -t miningcore:26.04 .
+
+# ---------------------------------------------------------------------------
+# Build dependencies (cached separately so source changes don't re-run apt)
+# ---------------------------------------------------------------------------
+FROM ubuntu:26.04 AS deps
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1
+
+RUN apt-get update && apt-get -y install --no-install-recommends \
+        dotnet-sdk-10.0 \
+        git \
+        ca-certificates \
+        cmake \
+        ninja-build \
+        build-essential \
+        libssl-dev \
+        pkg-config \
+        libboost-all-dev \
+        libsodium-dev \
+        libzmq5 \
+        libzmq3-dev \
+        libgmp-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------------------------------------------------
+# Build
+# ---------------------------------------------------------------------------
+FROM deps AS builder
+
+WORKDIR /app
+COPY . .
+
+# The native hashing libraries are compiled with -march=native / -DARCH=native,
+# so the output is tuned to the CPU of the machine running this build.
+WORKDIR /app/src/Miningcore
+RUN dotnet publish -c Release -o /build
+
+# ---------------------------------------------------------------------------
+# Artifact-only stage, consumed via `docker build --output`
+# ---------------------------------------------------------------------------
+FROM scratch AS artifacts
+COPY --from=builder /build /
+
+# ---------------------------------------------------------------------------
+# Runnable image
+# ---------------------------------------------------------------------------
+FROM ubuntu:26.04 AS runtime
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1
+
+RUN apt-get update && apt-get -y install --no-install-recommends \
+        dotnet-runtime-10.0 \
+        aspnetcore-runtime-10.0 \
+        libssl3t64 \
+        libsodium23 \
+        libzmq5 \
+        libgmp10 \
+        libboost-date-time1.90.0 \
+        ca-certificates \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=builder /build ./
+
+EXPOSE 4000-4090
+
+ENTRYPOINT ["./Miningcore"]
+CMD ["-c", "config.json"]

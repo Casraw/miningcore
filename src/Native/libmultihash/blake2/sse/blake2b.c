@@ -298,6 +298,12 @@ int blake2( void *out, size_t outlen, const void *in, size_t inlen, const void *
 }
 
 /* Argon2 Team - Begin Code */
+
+/* Implemented in argon2d/core.c. Declared locally rather than including
+   argon2d/core.h, whose blake2 headers clash with the SSE ones above.
+   gcc >= 14 rejects implicit function declarations, so this is required. */
+void clear_internal_memory(void *v, size_t n);
+
 int blake2b_long(void *pout, size_t outlen, const void *in, size_t inlen) {
     uint8_t *out = (uint8_t *)pout;
     blake2b_state blake_state;

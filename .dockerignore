@@ -1,0 +1,23 @@
+# NOTE: .git is deliberately NOT excluded - GitVersion.MsBuild reads it during
+# the build to stamp the assembly version and fails without it.
+.github
+.idea
+.vs
+.vscode
+
+# local build output - must not leak into the image, a stale obj/ from a
+# different SDK or target framework breaks restore inside the container
+build/
+**/bin/
+**/obj/
+**/cmake-build-*/
+
+# native build leftovers
+**/*.o
+**/*.a
+**/*.so
+
+logs/
+src/Miningcore/config.json
+src/Miningcore/config2.json
+src/Miningcore/coins2.json
