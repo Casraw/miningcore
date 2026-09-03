@@ -1,0 +1,67 @@
+name: miningcore
+
+# Miningcore deployment for new.mining-pool.io
+#
+#  - db:         PostgreSQL with a persistent named volume. The schema is
+#                created automatically on first init from ./initdb.
+#  - miningcore: built from the repo (./repo) using the Ubuntu 26.04 image,
+#                talks to the Cascoin daemon over the internal network
+#                (10.0.0.2:45789) and to Postgres over the compose network.
+#
+# Secrets (Postgres password) come from the .env file next to this compose
+# file; the daemon RPC credentials live inside config/config.json.
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    stop_grace_period: 1m
+    environment:
+      POSTGRES_DB: miningcore
+      POSTGRES_USER: miningcore
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in deploy/.env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+    networks:
+      - mcnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U miningcore -d miningcore"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  miningcore:
+    build:
+      context: ./repo
+      dockerfile: Dockerfile.ubuntu-26.04
+      target: runtime
+    image: miningcore:local
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./config/config.json:/app/config.json:ro
+      - mclogs:/app/logs
+    ports:
+      # Stratum ports (public - miners connect here)
+      - "4066:4066"   # Cascoin SHA256d
+      - "4067:4067"   # Cascoin MinotaurX
+      # REST API - bound to localhost only; put a reverse proxy in front to expose it
+      - "127.0.0.1:4000:4000"
+    networks:
+      - mcnet
+    extra_hosts:
+      # lets you reference the daemon host by name if desired
+      - "cascoin-daemon:10.0.0.2"
+
+networks:
+  mcnet:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local
+  mclogs:
+    driver: local
