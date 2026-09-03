@@ -716,6 +716,64 @@
         "explorerTxLink": "https://cann.tokenview.com/en/tx/{0}",
         "explorerAccountLink": "https://cann.tokenview.com/en/address/{0}"
     },
+    "cascoin": {
+        "name": "Cascoin",
+        "canonicalName": "Cascoin",
+        "symbol": "CAS",
+        "family": "bitcoin",
+        "website": "https://cascoin.net/",
+        "github": "https://github.com/casraw/cascoin",
+        "market": "",
+        "twitter": "",
+        "telegram": "",
+        "discord": "https://discord.gg/J2NxATBS8z",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "sha256d"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "explorerBlockLink": "https://www.casplorer.com/block/$hash$",
+        "explorerTxLink": "https://www.casplorer.com/tx/{0}",
+        "explorerAccountLink": "https://www.casplorer.com/address/{0}"
+    },
+    "cascoin-minotaurx": {
+        "name": "Cascoin MinotaurX",
+        "canonicalName": "Cascoin",
+        "symbol": "CAS",
+        "family": "bitcoin",
+        "website": "https://cascoin.net/",
+        "github": "https://github.com/casraw/cascoin",
+        "market": "",
+        "twitter": "",
+        "telegram": "",
+        "discord": "https://discord.gg/J2NxATBS8z",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "minotaurx"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "explorerBlockLink": "https://www.casplorer.com/block/$hash$",
+        "explorerTxLink": "https://www.casplorer.com/tx/{0}",
+        "explorerAccountLink": "https://www.casplorer.com/address/{0}"
+    },
     "cpuchain": {
         "name": "CPUchain",
         "canonicalName": "CPUchain",
