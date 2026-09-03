@@ -2,16 +2,73 @@ name: miningcore
 
 # Miningcore deployment for new.mining-pool.io
 #
-#  - db:         PostgreSQL with a persistent named volume. The schema is
-#                created automatically on first init from ./initdb.
+#  - traefik:    edge router. Terminates TLS (Let's Encrypt) and routes
+#                https://<domain>/        -> dashboard (SPA)
+#                https://<domain>/api     -> miningcore REST API
+#                https://<domain>/notifications -> miningcore websocket feed
+#                Routing comes from Docker labels on the services below.
+#  - dashboard:  the React frontend, built from ./repo/web and served by nginx.
 #  - miningcore: built from the repo (./repo) using the Ubuntu 26.04 image,
 #                talks to the Cascoin daemon over the internal network
 #                (10.0.0.2:45789) and to Postgres over the compose network.
+#  - db:         PostgreSQL with a persistent named volume. The schema is
+#                created automatically on first init from ./initdb.
 #
 # Secrets (Postgres password) come from the .env file next to this compose
 # file; the daemon RPC credentials live inside config/config.json.
 
 services:
+  traefik:
+    # v3.7 ("Langres"): modern Docker API client that negotiates the engine
+    # API version (older v3.1 pinned 1.24 and failed against Docker Engine 29+).
+    image: traefik:v3.7
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=miningcore_mcnet
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Force HTTPS everywhere
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # Let's Encrypt via HTTP-01 challenge
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL:-support@mining-pool.io}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-acme:/letsencrypt
+    networks:
+      - mcnet
+
+  dashboard:
+    build:
+      context: ./repo/web
+      dockerfile: Dockerfile
+      args:
+        VITE_STRATUM_HOST: ${STRATUM_HOST:-new.mining-pool.io}
+        VITE_API_BASE: /api
+    image: miningcore-dashboard:local
+    restart: unless-stopped
+    depends_on:
+      - miningcore
+    networks:
+      - mcnet
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=miningcore_mcnet
+      - traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_DOMAIN:-new.mining-pool.io}`)
+      - traefik.http.routers.dashboard.entrypoints=websecure
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.routers.dashboard.tls.certresolver=le
+      - traefik.http.routers.dashboard.priority=1
+      - traefik.http.services.dashboard.loadbalancer.server.port=80
+
   db:
     image: postgres:16
     restart: unless-stopped
@@ -45,16 +102,28 @@ services:
       - ./config/config.json:/app/config.json:ro
       - mclogs:/app/logs
     ports:
-      # Stratum ports (public - miners connect here)
+      # Stratum ports (public - miners connect here, raw TCP, not via Traefik)
       - "4066:4066"   # Cascoin SHA256d
       - "4067:4067"   # Cascoin MinotaurX
-      # REST API - bound to localhost only; put a reverse proxy in front to expose it
+      # REST API - bound to localhost for local debugging; public access is
+      # served through Traefik at https://<domain>/api
       - "127.0.0.1:4000:4000"
     networks:
       - mcnet
     extra_hosts:
       # lets you reference the daemon host by name if desired
       - "cascoin-daemon:10.0.0.2"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=miningcore_mcnet
+      # REST API + websocket notifications share the same backend service.
+      - traefik.http.routers.mc-api.rule=Host(`${DASHBOARD_DOMAIN:-new.mining-pool.io}`) && (PathPrefix(`/api`) || PathPrefix(`/notifications`))
+      - traefik.http.routers.mc-api.entrypoints=websecure
+      - traefik.http.routers.mc-api.tls=true
+      - traefik.http.routers.mc-api.tls.certresolver=le
+      - traefik.http.routers.mc-api.priority=100
+      - traefik.http.routers.mc-api.service=mc-api
+      - traefik.http.services.mc-api.loadbalancer.server.port=4000
 
 networks:
   mcnet:
@@ -64,4 +133,6 @@ volumes:
   pgdata:
     driver: local
   mclogs:
+    driver: local
+  traefik-acme:
     driver: local

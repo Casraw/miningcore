@@ -37,10 +37,37 @@ is initialised (from `initdb/`). It is NOT re-applied on later starts.
 
 ## Ports
 
-- `4066/tcp` Cascoin SHA256d stratum (public)
-- `4067/tcp` Cascoin MinotaurX stratum (public)
-- `4000/tcp` REST API - bound to `127.0.0.1` only. Put a reverse proxy in front
-  to expose it publicly.
+- `80/tcp`, `443/tcp` Traefik edge router (public). Terminates TLS and serves
+  the dashboard + API. HTTP is redirected to HTTPS.
+- `4066/tcp` Cascoin SHA256d stratum (public, raw TCP - not via Traefik)
+- `4067/tcp` Cascoin MinotaurX stratum (public, raw TCP - not via Traefik)
+- `4000/tcp` REST API - bound to `127.0.0.1` only for local debugging. Public
+  access is served through Traefik at `https://<domain>/api`.
+
+## Dashboard + Traefik
+
+The stack ships a web dashboard (React SPA in `repo/web`) served by nginx, with
+Traefik in front handling TLS:
+
+```
+https://new.mining-pool.io/               -> dashboard (SPA)
+https://new.mining-pool.io/api/...         -> miningcore REST API (port 4000)
+https://new.mining-pool.io/notifications   -> miningcore websocket feed
+```
+
+Requirements before the first deploy:
+
+1. A DNS **A record** for `DASHBOARD_DOMAIN` (default `new.mining-pool.io`)
+   pointing at this host's public IP. Let's Encrypt uses an HTTP-01 challenge on
+   port 80, so the domain must resolve here first or certificate issuance fails.
+2. Ports `80` and `443` open in the firewall.
+
+Relevant `.env` knobs (all optional, defaults in `.env.example`):
+`DASHBOARD_DOMAIN`, `ACME_EMAIL`, `STRATUM_HOST`.
+
+The dashboard is a static build: the stratum host and `/api` base are baked in
+at image build time from the compose `args`, so rebuild (`./deploy.sh`) after
+changing `STRATUM_HOST` or the domain.
 
 ## Adding another pool later
 
