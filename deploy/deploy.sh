@@ -32,6 +32,9 @@ set +a
 : "${BTCS_POOL_ADDRESS:?BTCS_POOL_ADDRESS must be set in .env (a Bitcoin Silver address owned by the 'pool' wallet)}"
 : "${BTCS_RPC_USER:?BTCS_RPC_USER must be set in .env (from bitcoinsilver.conf on the wallet host)}"
 : "${BTCS_RPC_PASSWORD:?BTCS_RPC_PASSWORD must be set in .env (from bitcoinsilver.conf on the wallet host)}"
+: "${BTGS_POOL_ADDRESS:?BTGS_POOL_ADDRESS must be set in .env (a Bitcoin Gold BTGS address owned by the 'pool' wallet)}"
+: "${BTGS_RPC_USER:?BTGS_RPC_USER must be set in .env (from btgs.conf on the wallet host)}"
+: "${BTGS_RPC_PASSWORD:?BTGS_RPC_PASSWORD must be set in .env (from btgs.conf on the wallet host)}"
 
 echo "==> Rendering config/config.json"
 mkdir -p config initdb
@@ -54,6 +57,9 @@ repl = {
     "__BTCS_POOL_ADDRESS__": os.environ["BTCS_POOL_ADDRESS"],
     "__BTCS_RPC_USER__":     os.environ["BTCS_RPC_USER"],
     "__BTCS_RPC_PASSWORD__": os.environ["BTCS_RPC_PASSWORD"],
+    "__BTGS_POOL_ADDRESS__": os.environ["BTGS_POOL_ADDRESS"],
+    "__BTGS_RPC_USER__":     os.environ["BTGS_RPC_USER"],
+    "__BTGS_RPC_PASSWORD__": os.environ["BTGS_RPC_PASSWORD"],
 }
 for k, v in repl.items():
     tpl = tpl.replace(k, v)

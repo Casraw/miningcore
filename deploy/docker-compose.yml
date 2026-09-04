@@ -110,6 +110,7 @@ services:
       - "4072:4072"   # DigiByte Skein
       - "4073:4073"   # DigiByte Qubit
       - "4074:4074"   # Bitcoin Silver SHA256d
+      - "4075:4075"   # Bitcoin Gold BTGS SHA256d
       # REST API - bound to localhost for local debugging; public access is
       # served through Traefik at https://<domain>/api
       - "127.0.0.1:4000:4000"

@@ -406,6 +406,35 @@
         },
         "coinbaseIgnoreAuxFlags": true
     },
+    "btgs": {
+        "name": "Bitcoin Gold",
+        "canonicalName": "BitcoinGold-BTGS",
+        "symbol": "BTGS",
+        "family": "bitcoin",
+        "website": "https://bitcoingold.site/",
+        "market": "",
+        "twitter": "https://x.com/BitcoinBTGS",
+        "telegram": "https://t.me/BitcoinBTGS",
+        "discord": "https://discord.gg/QuPjAa3G5z",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "sha256d"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "coinbaseIgnoreAuxFlags": true,
+        "explorerBlockLink": "https://explore.bitcoingold.site/block/$hash$",
+        "explorerTxLink": "https://explore.bitcoingold.site/tx/{0}",
+        "explorerAccountLink": "https://explore.bitcoingold.site/address/{0}"
+    },
     "bitcoin-cash": {
         "name": "Bitcoin Cash",
         "canonicalName": "Bitcoin-Cash",
