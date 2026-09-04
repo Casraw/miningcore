@@ -37,7 +37,7 @@ public class BlockRepository : IBlockRepository
             @"INSERT INTO blocks(poolid, blockheight, networkdifficulty, status, type, transactionconfirmationdata,
                 miner, reward, effort, minereffort, confirmationprogress, source, hash, created)
             VALUES(@poolid, @blockheight, @networkdifficulty, @status, @type, @transactionconfirmationdata,
-                @miner, @reward, (SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND created > (SELECT created FROM blocks WHERE poolid = @poolId ORDER BY created DESC LIMIT 1) AND created < now()), (SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > (SELECT created FROM blocks WHERE poolid = @poolId AND miner = @miner ORDER BY created DESC LIMIT 1) AND created < now()), @confirmationprogress, @source, @hash, @created)";
+                @miner, @reward, (SELECT SUM(difficulty / NULLIF(networkdifficulty, 0)) FROM shares WHERE poolid = @poolId AND created > (SELECT created FROM blocks WHERE poolid = @poolId ORDER BY created DESC LIMIT 1) AND created < now()), (SELECT SUM(difficulty / NULLIF(networkdifficulty, 0)) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > (SELECT created FROM blocks WHERE poolid = @poolId AND miner = @miner ORDER BY created DESC LIMIT 1) AND created < now()), @confirmationprogress, @source, @hash, @created)";
 
         await con.ExecuteAsync(query, mapped, tx);
     }

@@ -51,7 +51,7 @@ services:
       context: ./repo/web
       dockerfile: Dockerfile
       args:
-        VITE_STRATUM_HOST: ${STRATUM_HOST:-new.mining-pool.io}
+        VITE_STRATUM_HOST: ${STRATUM_HOST:-mining-pool.io}
         VITE_API_BASE: /api
     image: miningcore-dashboard:local
     restart: unless-stopped
@@ -62,7 +62,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=miningcore_mcnet
-      - traefik.http.routers.dashboard.rule=Host(`${DASHBOARD_DOMAIN:-new.mining-pool.io}`)
+      - traefik.http.routers.dashboard.rule=Host(`mining-pool.io`) || Host(`new.mining-pool.io`)
       - traefik.http.routers.dashboard.entrypoints=websecure
       - traefik.http.routers.dashboard.tls=true
       - traefik.http.routers.dashboard.tls.certresolver=le
@@ -122,7 +122,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=miningcore_mcnet
       # REST API + websocket notifications share the same backend service.
-      - traefik.http.routers.mc-api.rule=Host(`${DASHBOARD_DOMAIN:-new.mining-pool.io}`) && (PathPrefix(`/api`) || PathPrefix(`/notifications`))
+      - traefik.http.routers.mc-api.rule=(Host(`mining-pool.io`) || Host(`new.mining-pool.io`)) && (PathPrefix(`/api`) || PathPrefix(`/notifications`))
       - traefik.http.routers.mc-api.entrypoints=websecure
       - traefik.http.routers.mc-api.tls=true
       - traefik.http.routers.mc-api.tls.certresolver=le

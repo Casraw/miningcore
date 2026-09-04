@@ -77,14 +77,17 @@ public class ShareRepository : IShareRepository
 
     public Task<double?> GetEffortBetweenCreatedAsync(IDbConnection con, string poolId, DateTime start, DateTime end)
     {
-        const string query = "SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND created > @start AND created < @end";
+        // NULLIF guards against shares recorded with networkdifficulty = 0
+        // (a daemon can momentarily report 0), which would otherwise raise a
+        // Postgres "division by zero" and 500 the whole /api/pools response.
+        const string query = "SELECT SUM(difficulty / NULLIF(networkdifficulty, 0)) FROM shares WHERE poolid = @poolId AND created > @start AND created < @end";
 
         return con.QuerySingleAsync<double?>(query, new { poolId, start, end });
     }
 
     public Task<double?> GetMinerEffortBetweenCreatedAsync(IDbConnection con, string poolId, string miner, DateTime start, DateTime end)
     {
-        const string query = "SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > @start AND created < @end";
+        const string query = "SELECT SUM(difficulty / NULLIF(networkdifficulty, 0)) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > @start AND created < @end";
 
         return con.QuerySingleAsync<double?>(query, new { poolId, miner, start, end });
     }
@@ -112,7 +115,7 @@ public class ShareRepository : IShareRepository
 
     public Task<double?> GetMinerShareDifficultyBetweenAsync(IDbConnection con, string poolId, string miner, DateTime start, DateTime end, CancellationToken ct)
     {
-        const string query = "SELECT SUM(difficulty / networkdifficulty) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > @start AND created < @end";
+        const string query = "SELECT SUM(difficulty / NULLIF(networkdifficulty, 0)) FROM shares WHERE poolid = @poolId AND miner = @miner AND created > @start AND created < @end";
 
         return con.QuerySingleAsync<double?>(new CommandDefinition(query, new { poolId, miner, start, end }, cancellationToken: ct));
     }
