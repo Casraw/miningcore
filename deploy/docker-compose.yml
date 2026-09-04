@@ -111,6 +111,15 @@ services:
       - "4073:4073"   # DigiByte Qubit
       - "4074:4074"   # Bitcoin Silver SHA256d
       - "4075:4075"   # Bitcoin Gold BTGS SHA256d
+      # SOLO pools
+      - "4076:4076"   # Cascoin SHA256d SOLO
+      - "4077:4077"   # Cascoin MinotaurX SOLO
+      - "4078:4078"   # DigiByte SHA256d SOLO
+      - "4079:4079"   # DigiByte Scrypt SOLO
+      - "4080:4080"   # DigiByte Skein SOLO
+      - "4081:4081"   # DigiByte Qubit SOLO
+      - "4082:4082"   # Bitcoin Silver SOLO
+      - "4083:4083"   # Bitcoin Gold BTGS SOLO
       # REST API - bound to localhost for local debugging; public access is
       # served through Traefik at https://<domain>/api
       - "127.0.0.1:4000:4000"

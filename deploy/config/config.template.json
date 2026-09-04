@@ -122,6 +122,64 @@
             }
         },
         {
+            "id": "cas-sha256-solo",
+            "enabled": true,
+            "coin": "cascoin",
+            "address": "__POOL_ADDRESS__",
+            "GBTArgs": [
+                {
+                    "rules": [
+                        "segwit"
+                    ],
+                    "powalgo": "sha256d"
+                }
+            ],
+            "rewardRecipients": [
+                {
+                    "address": "__POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4076": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 0.5,
+                    "name": "Cascoin SHA256 SOLO",
+                    "varDiff": {
+                        "minDiff": 0.1,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 45789,
+                    "user": "__RPC_USER__",
+                    "password": "__RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 0.5,
+                "payoutScheme": "SOLO",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
             "id": "cas-minotaurx",
             "enabled": true,
             "coin": "cascoin-minotaurx",
@@ -180,6 +238,64 @@
             }
         },
         {
+            "id": "cas-minotaurx-solo",
+            "enabled": true,
+            "coin": "cascoin-minotaurx",
+            "address": "__POOL_ADDRESS__",
+            "GBTArgs": [
+                {
+                    "rules": [
+                        "segwit"
+                    ],
+                    "powalgo": "minotaurx"
+                }
+            ],
+            "rewardRecipients": [
+                {
+                    "address": "__POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4077": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 0.01,
+                    "name": "Cascoin MinotaurX SOLO",
+                    "varDiff": {
+                        "minDiff": 0.002,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 45789,
+                    "user": "__RPC_USER__",
+                    "password": "__RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 0.5,
+                "payoutScheme": "SOLO",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
             "id": "dgb-sha256",
             "enabled": true,
             "coin": "digibyte-sha256",
@@ -224,6 +340,56 @@
                 "enabled": true,
                 "minimumPayment": 100,
                 "payoutScheme": "PPLNS",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
+            "id": "dgb-sha256-solo",
+            "enabled": true,
+            "coin": "digibyte-sha256",
+            "address": "__DGB_POOL_ADDRESS__",
+            "rewardRecipients": [
+                {
+                    "address": "__DGB_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4078": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 1024,
+                    "name": "DigiByte SHA256d SOLO",
+                    "varDiff": {
+                        "minDiff": 128,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 8432,
+                    "user": "__DGB_RPC_USER__",
+                    "password": "__DGB_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 100,
+                "payoutScheme": "SOLO",
                 "payoutSchemeConfig": {
                     "factor": 2.0
                 }
@@ -280,6 +446,56 @@
             }
         },
         {
+            "id": "dgb-scrypt-solo",
+            "enabled": true,
+            "coin": "digibyte-scrypt",
+            "address": "__DGB_POOL_ADDRESS__",
+            "rewardRecipients": [
+                {
+                    "address": "__DGB_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4079": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 1024,
+                    "name": "DigiByte Scrypt SOLO",
+                    "varDiff": {
+                        "minDiff": 512,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 8432,
+                    "user": "__DGB_RPC_USER__",
+                    "password": "__DGB_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 100,
+                "payoutScheme": "SOLO",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
             "id": "dgb-skein",
             "enabled": true,
             "coin": "digibyte-skein",
@@ -330,6 +546,56 @@
             }
         },
         {
+            "id": "dgb-skein-solo",
+            "enabled": true,
+            "coin": "digibyte-skein",
+            "address": "__DGB_POOL_ADDRESS__",
+            "rewardRecipients": [
+                {
+                    "address": "__DGB_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4080": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 256,
+                    "name": "DigiByte Skein SOLO",
+                    "varDiff": {
+                        "minDiff": 32,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 8432,
+                    "user": "__DGB_RPC_USER__",
+                    "password": "__DGB_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 100,
+                "payoutScheme": "SOLO",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
             "id": "dgb-qubit",
             "enabled": true,
             "coin": "digibyte-qubit",
@@ -374,6 +640,56 @@
                 "enabled": true,
                 "minimumPayment": 100,
                 "payoutScheme": "PPLNS",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
+            "id": "dgb-qubit-solo",
+            "enabled": true,
+            "coin": "digibyte-qubit",
+            "address": "__DGB_POOL_ADDRESS__",
+            "rewardRecipients": [
+                {
+                    "address": "__DGB_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4081": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 256,
+                    "name": "DigiByte Qubit SOLO",
+                    "varDiff": {
+                        "minDiff": 32,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 8432,
+                    "user": "__DGB_RPC_USER__",
+                    "password": "__DGB_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 100,
+                "payoutScheme": "SOLO",
                 "payoutSchemeConfig": {
                     "factor": 2.0
                 }
@@ -437,6 +753,63 @@
             }
         },
         {
+            "id": "bitcoinsilver-solo",
+            "enabled": true,
+            "coin": "bitcoinsilver",
+            "address": "__BTCS_POOL_ADDRESS__",
+            "GBTArgs": [
+                {
+                    "rules": [
+                        "segwit"
+                    ]
+                }
+            ],
+            "rewardRecipients": [
+                {
+                    "address": "__BTCS_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4082": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 16384,
+                    "name": "Bitcoin Silver SOLO",
+                    "varDiff": {
+                        "minDiff": 512,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 1000,
+                    "user": "__BTCS_RPC_USER__",
+                    "password": "__BTCS_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 1,
+                "payoutScheme": "SOLO",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
             "id": "btgs",
             "enabled": true,
             "coin": "btgs",
@@ -488,6 +861,63 @@
                 "enabled": true,
                 "minimumPayment": 1,
                 "payoutScheme": "PPLNS",
+                "payoutSchemeConfig": {
+                    "factor": 2.0
+                }
+            }
+        },
+        {
+            "id": "btgs-solo",
+            "enabled": true,
+            "coin": "btgs",
+            "address": "__BTGS_POOL_ADDRESS__",
+            "GBTArgs": [
+                {
+                    "rules": [
+                        "segwit"
+                    ]
+                }
+            ],
+            "rewardRecipients": [
+                {
+                    "address": "__BTGS_POOL_ADDRESS__",
+                    "percentage": 1.0
+                }
+            ],
+            "blockRefreshInterval": 500,
+            "jobRebroadcastTimeout": 10,
+            "clientConnectionTimeout": 600,
+            "banning": {
+                "enabled": true,
+                "time": 600,
+                "invalidPercent": 50,
+                "checkThreshold": 50
+            },
+            "ports": {
+                "4083": {
+                    "listenAddress": "0.0.0.0",
+                    "difficulty": 16384,
+                    "name": "Bitcoin Gold SOLO",
+                    "varDiff": {
+                        "minDiff": 512,
+                        "targetTime": 15,
+                        "retargetTime": 90,
+                        "variancePercent": 30
+                    }
+                }
+            },
+            "daemons": [
+                {
+                    "host": "10.0.0.2",
+                    "port": 45788,
+                    "user": "__BTGS_RPC_USER__",
+                    "password": "__BTGS_RPC_PASSWORD__"
+                }
+            ],
+            "paymentProcessing": {
+                "enabled": true,
+                "minimumPayment": 1,
+                "payoutScheme": "SOLO",
                 "payoutSchemeConfig": {
                     "factor": 2.0
                 }
