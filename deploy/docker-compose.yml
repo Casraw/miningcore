@@ -105,6 +105,11 @@ services:
       # Stratum ports (public - miners connect here, raw TCP, not via Traefik)
       - "4066:4066"   # Cascoin SHA256d
       - "4067:4067"   # Cascoin MinotaurX
+      - "4070:4070"   # DigiByte SHA256d
+      - "4071:4071"   # DigiByte Scrypt
+      - "4072:4072"   # DigiByte Skein
+      - "4073:4073"   # DigiByte Qubit
+      - "4074:4074"   # Bitcoin Silver SHA256d
       # REST API - bound to localhost for local debugging; public access is
       # served through Traefik at https://<domain>/api
       - "127.0.0.1:4000:4000"

@@ -109,6 +109,12 @@ $RECYCLE.BIN/
 .DS_Store
 
 #############
+## Kiro (local agent config / steering - not committed)
+#############
+
+.kiro/
+
+#############
 ## Ignore Logs
 #############
 

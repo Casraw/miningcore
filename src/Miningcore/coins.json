@@ -380,6 +380,32 @@
         "explorerTxLink": "https://www.blockchain.com/btc/tx/{0}",
         "explorerAccountLink": "https://www.blockchain.com/btc/address/{0}"
     },
+    "bitcoinsilver": {
+        "name": "Bitcoin Silver",
+        "canonicalName": "BitcoinSilver",
+        "symbol": "BTCS",
+        "family": "bitcoin",
+        "website": "",
+        "market": "",
+        "twitter": "",
+        "telegram": "",
+        "discord": "",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "sha256d"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "coinbaseIgnoreAuxFlags": true
+    },
     "bitcoin-cash": {
         "name": "Bitcoin Cash",
         "canonicalName": "Bitcoin-Cash",
